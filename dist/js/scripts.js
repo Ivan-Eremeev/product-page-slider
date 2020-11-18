@@ -42,14 +42,17 @@ $(document).ready(function () {
     };
 
     $.fancybox.defaults.thumbs.autoStart = true;
-    $(document).on('click', '.slick-cloned', function(e) {
-      var $slides = $(this)
-      .parent()
-      .children('#productPageSliderFor .slick-slide:not(.slick-cloned)');
-      $slides
-        .eq( ( $(this).attr("data-slick-index") || 0) % $slides.length )
-        .trigger("click.fb-start", { $trigger: $(this) });
-      return false;
+
+    $().fancybox({
+      selector : '#productPageSliderFor .slick-slide:not(.slick-cloned) div .productPageSlider_link',
+      backFocus : false,
+      loop: true, // Зацикленный просмотр
+      buttons: [ // Кнопки в верхней панели
+        "close"
+      ],
+      afterShow : function( instance, current ) {
+        current.opts.$orig.closest(".slick-initialized").slick('slickGoTo', parseInt(current.index), true);
+      }
     });
     
   }
